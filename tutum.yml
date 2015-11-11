@@ -33,4 +33,5 @@ lamp:
     - mirantis_half
   image:  ushios/lamp-ubuntu:latest
   environment:
-    - VIRTUAL_HOST=groupe3.apprensemble.link
+    - "VIRTUAL_HOST=fil${HOSTNAME#${HOSTNAME%?}}.apprensemble.link"
+  target_num_containers: 4
