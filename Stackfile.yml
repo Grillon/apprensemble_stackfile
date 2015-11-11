@@ -1,0 +1,36 @@
+webshell:
+  tags: 
+    - mirantis_half
+  image: tutum.co/grillon/shellinabox
+  ports:
+    - "443:4200"
+  environment:
+    - SIAB_USERCSS=White On Black:+/usr/share/shellinabox/white-on-black.css,Monochrome:-/usr/share/shellinabox/monochrome.css
+    - SIAB_PORT=4200
+    - SIAB_ADDUSER=true
+    - SIAB_USER=guest
+    - SIAB_USERID=1000
+    - SIAB_GROUP=guest
+    - SIAB_GROUPID=1000
+    - SIAB_PASSWORD=putsafepasswordhere
+    - SIAB_SHELL=/bin/bash
+    - SIAB_HOME=/home/guest
+    - SIAB_SUDO=false
+    - SIAB_SSL=true
+    - SIAB_SERVICE="/:LOGIN"
+    - SIAB_PKGS=none
+    - SIAB_SCRIPT=none
+nginx:
+  tags:
+    - mirantis_half
+  image: jwilder/nginx-proxy:latest
+  ports:
+    - "80:80"
+  volumes:
+    - /var/run/docker.sock:/tmp/docker.sock
+lamp:
+  tags:
+    - mirantis_half
+  image:  ushios/lamp-ubuntu:latest
+  environment:
+    - VIRTUAL_HOST=groupe3.apprensemble.link
