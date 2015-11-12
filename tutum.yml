@@ -28,10 +28,30 @@ nginx:
     - "80:80"
   volumes:
     - /var/run/docker.sock:/tmp/docker.sock
-lamp:
+db:
   tags:
     - mirantis_half
-  image:  ushios/lamp-ubuntu:latest
+  image: mysql:latest
+  expose:
+    - "3306"
+  volumes:
+    - /vols/var/mysql:/var/lib/mysql
+  environment:
+    - MYSQL_DATABASE=db
+    - MYSQL_USER=dbuser
+    - MYSQL_PASSWORD=mysql123
+    - MYSQL_ROOT_PASSWORD=mysql123
+web:
+  tags:
+    - mirantis_half
+  image: tutum/apache-php
+  expose:
+    - "80"
+    - "443"
+  links:
+    - db
+  volumes:
+    - /vols/app:/app
+  target_num_containers: 4
   environment:
     - "VIRTUAL_HOST=$TUTUM_CONTAINER_HOSTNAME.apprensemble.link"
-  target_num_containers: 4
